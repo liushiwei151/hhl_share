@@ -3,8 +3,8 @@
 	<div class="wall ">
 		<div class="goto_wall" @click="gotoWall"></div>
 		<transition-group name="slide" tag="ul">
-			<li v-for="item in textArr" v-bind:key="item">
-				{{ item }}
+			<li v-for="(item,index) in tanmu" :key="item.worksId">
+				{{ item.remark }}
 			</li>
 		</transition-group>
 	</div>
@@ -16,19 +16,14 @@
 		data() {
 			return {
 				//模拟心愿墙内容
-				textArr: ["11111111111", "2222222222", "3333333333", "44444444444", "555555555555", "666666666666", "7777777777",
-					"888888888888", "99999999999999"
-				],
-				number: 0
 			}
 		},
+		props:{
+			tanmu:{
+				default:[]
+			},
+		},
 		computed: {
-			text() {
-				return {
-					id: this.number,
-					val: this.textArr[this.number]
-				};
-			}
 		},
 		mounted() {
 			this.autoPlay();
@@ -36,13 +31,12 @@
 		methods: {
 			//自动播放
 			autoPlay() {
-				let length = this.textArr.length;
+				let length = this.tanmu.length;
 				setTimeout(() => {
-					let a = this.textArr.shift();
+					let a = this.tanmu.shift();
 					setTimeout(()=>{
-						this.textArr.push(a)
+						this.tanmu.push(a)
 					},3000)
-					// this.textArr.push(a)
 					this.autoPlay();
 				}, 2000)
 			},

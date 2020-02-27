@@ -5,9 +5,12 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import qs from 'qs'
+import layer from 'vue-layer'
+import 'vue-layer/lib/vue-layer.css'
 
 Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs
+Vue.prototype.$layer = layer(Vue)
 
 Vue.config.productionTip = false
 

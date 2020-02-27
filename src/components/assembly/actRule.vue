@@ -10,6 +10,10 @@
 				<div class="rule_douyin"></div>
 				<div class="rule_close" @click="close"></div>
 			</div>
+			<!-- 签到成功 -->
+			<div class="sign" v-if="showName==='sign'">
+				<div>签到成功，获得XX楼币</div>
+			</div>
 		</div>
 		
 	</div>
@@ -68,6 +72,21 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		//签到
+		.sign{
+			width:651px ;
+			height: 545px;
+			background: url(../../../static/home/sign_then.png) no-repeat;
+			background-size: 100% 100%;
+			box-sizing: border-box;
+			padding-top: 420px;
+			text-align: center;
+			div{
+				font-size: 41px;
+				color: rgb(90,34,23);
+				font-weight: 700;
+			}
+		}
 		//抖音活动规则
 		.douyin_rule{
 			width: 100%;

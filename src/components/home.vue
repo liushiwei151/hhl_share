@@ -1,7 +1,7 @@
 <template>
 	<div ref="box">
 		<div class="home">
-			<wall class="home_wall" @goto_wall="gotoWall"></wall>
+			<wall class="home_wall" @goto_wall="gotoWall" :tanmu="tanmuContent"></wall>
 			<div class="actRule_btn" @click="showRule(true,'home')"></div>
 			<div class="home_box">
 				<div class="box_Title">
@@ -20,10 +20,12 @@
 						<div v-for="(item,index) in imgUrl" :key="index" class="blessing_box">
 							<div class="blessing_img"><img :src="item.url" alt="我的祝福"></div>
 							<div class="examine">
-								<img :src="item.isExamine?'../../static/home/pass.png':'../../static/home/ing.png'">
+								<img :src="isPass[0]" v-if="item.isCheck==1">
+								<img :src="isPass[1]" v-if="item.isCheck==0">
+								<img :src="isPass[2]" v-if="item.isCheck==-1">
 							</div>
 						</div>
-						<div class="blessing_template">
+						<div class="blessing_template" @click="gotoWall">
 							<div> <img :src="template_img[0]"></div>
 						</div>
 					</div>
@@ -44,21 +46,15 @@
 </template>
 
 <script>
+	import api from '@/getApi.js'
 	import wall from "@/components/assembly/wall.vue"
 	import actRule from "@/components/assembly/actRule.vue"
 	export default {
 		name: "home",
-		components: {
-			wall,
-			actRule
-		},
-		mounted() {
-			//单纯在钩子中使用window.scrollTo无效即使使用this.$nextTick,
-			//页面刷新和关闭时触发top事件
-			window.addEventListener("beforeunload", this.top);
-		},
 		data() {
 			return {
+				//轮播内容
+				tanmuContent:[],
 				// 切换内容
 				title_switch: true,
 				//是否签到
@@ -68,15 +64,62 @@
 				//显示哪个规则
 				showRuleName:'',
 				//照片地址
-				imgUrl: [{'url':'https://pic.cwyyt.cn/upload/img/20200225/1158525852_moni.png','isExamine':false},
-					{'url':'https://pic.cwyyt.cn/upload/img/20200225/1158525852_moni.png','isExamine':true},
-					{'url':'https://pic.cwyyt.cn/upload/img/20200225/1158525852_moni.png','isExamine':false},
-				],
+				imgUrl:[],
+				//通过，未通过，审核中
+				isPass:['../../static/home/pass.png','../../static/home/no_pass.png','../../static/home/ing.png'],
 				//模板图片
 				template_img: ['../../static/home/template_img1.png', '../../static/home/template_img2.png']
 			}
 		},
+		components: {
+			wall,
+			actRule
+		},
+		inject:['wait'],
+		created() {
+			this.get_barrageList();
+			this.get_userProductionList()
+		},
+		mounted() {
+			//单纯在钩子中使用window.scrollTo无效即使使用this.$nextTick,
+			//页面刷新和关闭时触发top事件
+			window.addEventListener("beforeunload", this.top);
+		},
+		
 		methods: {
+			//获取许愿版内容
+			get_barrageList(){
+				this.wait(true)
+				api.barrageList().then((res)=>{
+					if(res.data.code==200){
+						this.wait(false)
+						this.tanmuContent=res.data.data.dataList;
+						console.log(this.tanmuContent)
+					}else{
+						this.$layer.msg("接口错误")
+					}
+				}).catch((err)=>{
+					this.$layer.msg("接口错误")
+				})
+			},
+			//获取用户祝福接口
+			get_userProductionList(){
+				this.wait(true);
+				api.userProductionList().then((res)=>{
+					if(res.data.code==200){
+						console.log(res.data.data.isSubscribe)
+						if(res.data.data.isSubscribe===false){
+							
+						}else{
+							this.imgUrl=res.data.data
+						}
+					}else{
+						this.$layer.msg("接口错误")
+					}
+				}).catch((err)=>{
+					this.$layer.msg("接口错误")
+				})
+			},
 			top() {
 				window.scrollTo(0, 0);
 			},
@@ -89,7 +132,26 @@
 			},
 			// 点击签到
 			sign() {
-				this.isSign = true;
+				this.wait(true);
+				api.signln().then((res)=>{
+					this.wait(false)
+					if(res.data.data.isSubscribe===false){
+						this.$layer.msg("未关注");
+						return
+					}
+					if(res.data.code==500){
+						this.showRule(true,'sign');
+						setTimeout(()=>{
+							this.showRule(false)
+							console.log(23)
+						},2000)
+						this.isSign = true;
+					}else{
+						this.$layer.msg("接口错误")
+					}
+				}).catch((err)=>{
+					this.$layer.msg("接口错误")
+				})
 			},
 			//显示规则
 			showRule(e,f) {
