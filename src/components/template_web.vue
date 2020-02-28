@@ -5,7 +5,7 @@
 			<canvas id="template_bg"></canvas>
 		</div>
 		<div class="word">
-			<textarea placeholder="输入祝福的话语" v-model="blessing"></textarea>
+			<textarea maxlength="100" placeholder="输入祝福的话语" v-model="blessing"></textarea>
 		</div>
 		<div class="template_btn">
 			<div class="btn_true" @click="upload"></div>
@@ -26,20 +26,16 @@
 				webId: 1,
 				// 模板图片和背景颜色
 				template_img: [{
-					'img': '../../static/template/bg_1.png',
-					'imgs': '../../static/template/bg1.png',
+					'imgs': './static/template/bg1.png',
 					color: 'rgb(166,217,233)'
 				}, {
-					'img': '../../static/template/bg_2.png',
-					'imgs': '../../static/template/bg2.png',
+					'imgs': './static/template/bg2.png',
 					color: 'rgb(255,192,63)'
 				}, {
-					'img': '../../static/template/bg_3.png',
-					'imgs': '../../static/template/bg3.png',
+					'imgs': './static/template/bg3.png',
 					color: 'rgb(255,156,168)'
 				}, {
-					'img': '../../static/template/bg_4.png',
-					'imgs': '../../static/template/bg4.png',
+					'imgs': './static/template/bg4.png',
 					color: 'rgb(154,222,207)'
 				}],
 				//canvas对象
@@ -94,7 +90,22 @@
 				const formData = new FormData();
 				// 后端接收二进制数据
 				formData.append("file", blob, `${name}.png`);
-				this.wait(true)
+				this.wait(true);
+				
+				/*let config = {
+				        //添加请求头
+				        headers: { "Content-Type": "multipart/form-data" },
+				        //添加上传进度监听事件
+				        onUploadProgress: e => {
+				          var completeProgress = ((e.loaded / e.total * 100) | 0) + "%";
+				          console.log(completeProgress)
+				        }
+				      };
+					  api.upload(formData,config).then((res)=>{
+						  console.log(res)
+					  }).catch((err)=>{
+						  console.log(err)
+					  })*/
 				fetch("http://qrhhl.yunyutian.cn/huanghelou1916-ans/file/upload", {
 						method: "POST",
 						body: formData
@@ -202,7 +213,7 @@
 				this.bg_img.onload = function() {
 					that.drawImgs(that.bg_img)
 					that.add_img = new Image();
-					that.add_img.src = "../../static/template/add_img.png"
+					that.add_img.src = "./static/template/add_img.png"
 					that.add_img.onload = function() {
 						that.draw_add();
 					}

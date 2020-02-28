@@ -32,13 +32,20 @@
 			//自动播放
 			autoPlay() {
 				let length = this.tanmu.length;
-				setTimeout(() => {
-					let a = this.tanmu.shift();
+				if(length>0){
+					setTimeout(() => {
+						let a = this.tanmu.shift();
+						setTimeout(()=>{
+							this.tanmu.push(a)
+						},3000)
+						this.autoPlay();
+					}, 2000)
+				}else{
 					setTimeout(()=>{
-						this.tanmu.push(a)
-					},3000)
-					this.autoPlay();
-				}, 2000)
+						this.autoPlay()
+					},1000)
+				}
+				
 			},
 			gotoWall(){
 				//进入许愿墙

@@ -30,11 +30,21 @@ import qs from 'qs'
  const signln=()=>{
 	 return axios.get('/prop/signln')
  }
- const upload=(data)=>{
-	 return axios.post('file/upload',data)
+ const upload=(data,config)=>{
+	 return axios.post('file/upload',data,config)
  }
  const productionAdd=(data)=>{
 	 return axios.post('/wishWall/productionAdd',data)
+ }
+ //获取微信权限
+ const jsSign=(url)=>{
+	 return axios.get('/index/jsSign',{
+		params:url
+	})
+ }
+ //分享增加次数
+ const share =()=>{
+	 return axios.get('/prop/share')
  }
  export default{
 	 productionList,
@@ -42,5 +52,7 @@ import qs from 'qs'
 	 userProductionList,
 	 signln,
 	 upload,
-	 productionAdd
+	 productionAdd,
+	 jsSign,
+	 share
  }

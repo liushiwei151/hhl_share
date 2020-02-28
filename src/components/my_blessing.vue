@@ -11,6 +11,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="back" @click="back"></div>
 		</div>
 	</div>
 </template>
@@ -31,7 +32,7 @@
 					{"url":'https://pic.cwyyt.cn/upload/img/20200228/000713713_21.png',"isCheck":1},
 					{"url":'https://pic.cwyyt.cn/upload/img/20200228/000713713_21.png',"isCheck":1},
 				],
-				isPass:['../../static/home/pass.png','../../static/home/no_pass.png','../../static/home/ing.png'],
+				isPass:['./static/home/pass.png','./static/home/no_pass.png','./static/home/ing.png'],
 			}
 		},
 		inject:['wait'],
@@ -39,10 +40,14 @@
 			this.get_userProductionList()
 		},
 		methods:{
+			back(){
+				this.$router.push('/')
+			},
 			//获取用户祝福接口
 			get_userProductionList(){
 				this.wait(true);
 				api.userProductionList().then((res)=>{
+					this.wait(false);
 					if(res.data.code==200){
 						if(res.data.data.isSubscribe===false){
 							this.$layer.msg("未关注")
@@ -77,6 +82,16 @@
 			padding-top: 145px;
 			box-sizing: border-box;
 			padding-bottom: 50px;
+			position: relative;
+			.back{
+				position: absolute;
+				bottom: -42.5px;
+				left: 145px;
+				width:406px ;
+				height: 85px;
+				background: url(../../static/back.png) no-repeat;
+				background-size: 100% 100%;
+			}
 			.scroll{
 				display: flex;
 				flex-wrap: wrap;
@@ -86,6 +101,7 @@
 			}
 			.blessing_box{
 				width: 50%;
+				height: 488px;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;

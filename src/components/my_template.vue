@@ -2,10 +2,9 @@
 	<div class="template">
 		<div v-for="item in 4" class="template_box">
 			<div class="template_img">
-				<img :src="'../../static/template/bg'+item+'.png'" >
+				<img :src="'./static/template/bg'+item+'.png'" >
 			</div>
 			<div class="template_btn" @click="goto_web(item)">
-				<img src="../../static/template/do_btn.png">
 			</div>
 		</div>
 	</div>
@@ -48,6 +47,9 @@
 				width: 284px;
 				height: 69px;
 				margin-top: 10px;
+				background:url(../../static/template/do_btn.png) no-repeat;
+				background-size: 100% 100%;
+				
 			}
 			.template_img{
 				width: 330px;

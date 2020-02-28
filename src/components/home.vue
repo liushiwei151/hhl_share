@@ -66,9 +66,9 @@
 				//照片地址
 				imgUrl:[],
 				//通过，未通过，审核中
-				isPass:['../../static/home/pass.png','../../static/home/no_pass.png','../../static/home/ing.png'],
+				isPass:['./static/home/pass.png','./static/home/no_pass.png','./static/home/ing.png'],
 				//模板图片
-				template_img: ['../../static/home/template_img1.png', '../../static/home/template_img2.png']
+				template_img: ['./static/home/template_img1.png', './static/home/template_img2.png']
 			}
 		},
 		components: {
@@ -94,7 +94,8 @@
 					if(res.data.code==200){
 						this.wait(false)
 						this.tanmuContent=res.data.data.dataList;
-						console.log(this.tanmuContent)
+						console.log(this.tanmuContent);
+						console.log(res.data.data.dataList)
 					}else{
 						this.$layer.msg("接口错误")
 					}
