@@ -1,13 +1,13 @@
 <template>
 	<div class="wish">
 		<div class="wish_box">
-			<div class="img_box">
-				<div v-for="(item,index) in imgUrl" class="img_box_div">
-					<div class="wish_img">
-						<img :src="item.url" alt="">
+				<viewer :images="imgUrl" class="img_box">
+					<div v-for="(item,index) in imgUrl" :key="index" class="img_box_div" @click="preview(item)">
+						<div class="wish_img">
+							<img :src="item.url" alt="">
+						</div>
 					</div>
-				</div>
-			</div>
+				</viewer>
 			<div class="wish_btn" @click="goto_template"></div>
 		</div>
 	</div>
@@ -28,6 +28,17 @@
 		},
 		inject:['wait'],
 		methods: {
+			//用户点击计数
+			preview(e){
+				let data={
+					worksId:e.worksId
+				}
+				api.preview(data).then((res)=>{
+					console.log((res))
+				}).catch((err)=>{
+					console.log(err)
+				})
+			},
 			//调取许愿总单
 			get_productionList() {
 				let data={

@@ -1,16 +1,16 @@
 <template>
 	<div class="blessing">
 		<div class="my_blessing">
-			<div class="scroll">
+			<viewer :images="imgUrl" class="scroll">
 				<div v-for="(item,index) in imgUrl" :key="index" class="blessing_box">
 					<div class="blessing_img"><img :src="item.url" alt="我的祝福"></div>
 					<div class="examine">
-						<img :src="isPass[0]" v-if="item.isCheck==1">
-						<img :src="isPass[1]" v-if="item.isCheck==0">
-						<img :src="isPass[2]" v-if="item.isCheck==-1">
+						<div style="background-image:url('./static/home/pass.png');background-size: 100% 100%;" v-if="item.isCheck==1"></div>
+						<div style="background-image:url('./static/home/ing.png');background-size: 100% 100%;" v-if="item.isCheck==0"></div>
+						<div style="background-image:url('./static/home/no_pass.png');background-size: 100% 100%;" v-if="item.isCheck==-1"></div>
 					</div>
 				</div>
-			</div>
+			</viewer>
 			<div class="back" @click="back"></div>
 		</div>
 	</div>
@@ -118,11 +118,9 @@
 					
 				}
 				.examine{
-					width: 266px;
-					height: 65px;
-					img{
-						width: 100%;
-						height: 100%;
+					div{
+						width: 266px;
+						height: 65px;
 					}
 				}
 			}

@@ -14,6 +14,23 @@
 			<div class="sign" v-if="showName==='sign'">
 				<div>签到成功，获得XX楼币</div>
 			</div>
+			<!-- 分享引导页 -->
+			<div class="share" v-if="showName==='share'" @click="close">
+				<div class="share_jt">
+				</div>
+				<div class="share_text">
+					<div><i>1</i><p>点击右上角</p></div>
+					<div><i>2</i><p>选择分享</p></div>
+				</div>
+			</div>
+			<!-- 未关注 -->
+			<div class="unconcerned" v-if="showName==='unconcerned'">
+				<div>
+					<img src="https://pic.cwyyt.cn/upload/img/20200301/233301331_qrc.png" >
+				</div>
+				<p>关注前请仔细阅读<a href="https://www.baidu.com/">《沙龙服务条款》</a></p>
+				<p>一经关注则视为同意</p>
+			</div>
 		</div>
 		
 	</div>
@@ -72,6 +89,69 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		//关注页面
+		.unconcerned{
+			width: 651px;
+			height: 672px;
+			background: url(../../../static/unconcerned.png) no-repeat;
+			background-size: 100% 100%;
+			box-sizing: border-box;
+			padding-top: 220px;
+			p{
+				color: rgb(85,34,8);
+				font-size: 24px;
+				a{
+					color: rgb(212,62,62);
+					text-decoration: none;
+				}
+			}
+			div{
+				width: 241px;
+				height: 241px;
+				margin: 0 auto 20px;
+				img{
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
+		//分享引导页
+		.share{
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			padding: 20px;
+			.share_text{
+				float: right;
+				height:480px ;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				font-size: 40px;
+				div{
+					display: flex;
+					justify-content: left;
+					align-items: center;
+				}
+				i{
+					display: block;
+					width: 50px;
+					height:50px;
+					background-color: rgb(250,92,93);
+					border-radius: 50%;
+					color: #fff;
+					font-weight: 700;
+					margin-right: 10px;
+				}
+			}
+			.share_jt{
+				width: 290px;
+				height: 350px;
+				background: url(../../../static/jiantou.png) no-repeat;
+				background-size: 100% 100%;
+				float: right;
+			}
+		}
 		//签到
 		.sign{
 			width:651px ;

@@ -46,6 +46,15 @@ import qs from 'qs'
  const share =()=>{
 	 return axios.get('/prop/share')
  }
+ //作品预览点击
+ const preview =(data)=>{
+	 return axios.get('/wishWall/preview',{
+		params:data
+	})
+ }
+ const isSignln=()=>{
+	 return axios.get('/wishWall/isSignln')
+ }
  export default{
 	 productionList,
 	 barrageList,
@@ -54,5 +63,7 @@ import qs from 'qs'
 	 upload,
 	 productionAdd,
 	 jsSign,
-	 share
+	 share,
+	 preview,
+	 isSignln
  }

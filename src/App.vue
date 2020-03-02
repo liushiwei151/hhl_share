@@ -59,12 +59,13 @@
 					] // 必填，需要使用的JS接口列表
 				});
 				console.log('wx获取权限结束');
+				let url ="http://qrhhl.yunyutian.cn/huanghelou1916-center/wx/gCode?name=toAns"
 				that.wx.ready(function() {
 					// 分享朋友圈回调
 					that.wx.onMenuShareTimeline({
-						title: '待定', // 分享标题
+						title: '湖北加油,我们一起更上一层楼！', // 分享标题
 						link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						imgUrl: '', // 分享图标
+						imgUrl: 'https://pic.cwyyt.cn/upload/img/20200302/1241194119_blessing.jpg', // 分享图标
 						success: function() {
 							// 用户点击了分享后执行的回调函数
 							that.get_share()
@@ -72,10 +73,10 @@
 					});
 					// 分享朋友回调
 					that.wx.onMenuShareAppMessage({
-						title: '标题待定', // 分享标题
-						desc: '描述待定', // 分享描述
+						title: '湖北加油,我们一起更上一层楼！', // 分享标题
+						desc: '湖北加油,我们一起更上一层楼！', // 分享描述
 						link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						imgUrl: '', // 分享图标
+						imgUrl: 'https://pic.cwyyt.cn/upload/img/20200302/1241194119_blessing.jpg', // 分享图标
 						type: '', // 分享类型,music、video或link，不填默认为link
 						dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 						success: function() {

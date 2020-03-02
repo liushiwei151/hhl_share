@@ -9,13 +9,13 @@ import layer from 'vue-layer'
 import 'vue-layer/lib/vue-layer.css'
 import wx from 'weixin-js-sdk'
 import Viewer from 'v-viewer'
-// import 'viewerjs/dist/viewer.css'
+import 'viewerjs/dist/viewer.css'
 
-// Vue.use(Viewer, {
-//     defaultOptions: {
-//         zIndex: 9999
-//     }
-// })
+Vue.use(Viewer, {
+    defaultOptions: {
+        zIndex: 9999,
+　　　　　toolbar: true
+} })
 
 Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs

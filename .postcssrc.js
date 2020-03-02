@@ -18,7 +18,9 @@ module.exports = {
       minPixelValue: 1, // (Number) Set the minimum pixel value to replace.
       mediaQuery: false // (Boolean) Allow px to be converted in media queries.
     },
-    "postcss-viewport-units": {},
+    "postcss-viewport-units": {
+		filterRule: rule => rule.selector.includes('::after') && rule.selector.includes('::before') && rule.selector.includes(':after') && rule.selector.includes(':before')
+	},
     "cssnano": {
       "cssnano-preset-advanced": {
         zindex: false,

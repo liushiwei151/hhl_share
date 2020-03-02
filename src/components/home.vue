@@ -21,8 +21,8 @@
 							<div class="blessing_img"><img :src="item.url" alt="我的祝福"></div>
 							<div class="examine">
 								<img :src="isPass[0]" v-if="item.isCheck==1">
-								<img :src="isPass[1]" v-if="item.isCheck==0">
-								<img :src="isPass[2]" v-if="item.isCheck==-1">
+								<img :src="isPass[1]" v-if="item.isCheck==-1">
+								<img :src="isPass[2]" v-if="item.isCheck==0">
 							</div>
 						</div>
 						<div class="blessing_template" @click="gotoWall">
@@ -32,9 +32,9 @@
 					<!-- 心愿道具 -->
 					<div v-show="title_switch" class="wishProp">
 						<div class="wishProp_sign">
-							<div class="sign" @click="sign" :class="{gray:isSign}"></div>
+							<div class="sign" @click="sign" :class="{gray:isSign}" ></div>
 						</div>
-						<div class="wishProp_share"></div>
+						<div class="wishProp_share" @click="showRule(true,'share')"></div>
 						<div class="wishProp_details" @click="showRule(true,'douyin')"></div>
 					</div>
 				</div>
@@ -59,6 +59,8 @@
 				title_switch: true,
 				//是否签到
 				isSign: false,
+				//是否关注
+				isSubscribe:false,
 				//显示规则页面
 				isRule: false,
 				//显示哪个规则
@@ -78,7 +80,8 @@
 		inject:['wait'],
 		created() {
 			this.get_barrageList();
-			this.get_userProductionList()
+			this.get_userProductionList();
+			this.get_IsSignln()
 		},
 		mounted() {
 			//单纯在钩子中使用window.scrollTo无效即使使用this.$nextTick,
@@ -87,38 +90,63 @@
 		},
 		
 		methods: {
+			//获取客户是否签到
+			get_IsSignln(){
+				this.wait(true)
+				api.isSignln().then((res)=>{
+					this.wait(false);
+					if(res.data.data!=undefined&&res.data.data.isSubscribe===false){
+						this.isSubscribe=false;
+						return
+					}
+					if(res.data.code==200){
+						//已关注
+						this.isSubscribe=true;
+						//已签到
+						this.isSign=true
+					}else if(res.data.code==500){
+						//已关注
+						this.isSubscribe=true;
+						//未签到
+						this.isSign=false
+					}else{
+						this.$layer.msg("获取接口失败1")
+					}
+				})
+			},
 			//获取许愿版内容
 			get_barrageList(){
 				this.wait(true)
 				api.barrageList().then((res)=>{
+					this.wait(false)
+					if(res.data.data!=undefined&&res.data.data.isSubscribe===false){
+						this.isSubscribe=false;
+						return
+					}
 					if(res.data.code==200){
-						this.wait(false)
-						this.tanmuContent=res.data.data.dataList;
-						console.log(this.tanmuContent);
-						console.log(res.data.data.dataList)
+						this.isSubscribe=true;
+						this.tanmuContent=res.data.data;
 					}else{
-						this.$layer.msg("接口错误")
+						this.$layer.msg("获取接口失败3")
 					}
 				}).catch((err)=>{
-					this.$layer.msg("接口错误")
+					this.$layer.msg("获取接口失败4")
 				})
 			},
 			//获取用户祝福接口
 			get_userProductionList(){
 				this.wait(true);
 				api.userProductionList().then((res)=>{
+					if(res.data.data!=undefined&&res.data.data.isSubscribe===false){
+						return
+					}
 					if(res.data.code==200){
-						console.log(res.data.data.isSubscribe)
-						if(res.data.data.isSubscribe===false){
-							
-						}else{
 							this.imgUrl=res.data.data
-						}
 					}else{
-						this.$layer.msg("接口错误")
+						this.$layer.msg("获取接口失败5")
 					}
 				}).catch((err)=>{
-					this.$layer.msg("接口错误")
+					this.$layer.msg("获取接口失败6")
 				})
 			},
 			top() {
@@ -133,25 +161,29 @@
 			},
 			// 点击签到
 			sign() {
+				if(this.isSign===true){
+					return
+				}
 				this.wait(true);
 				api.signln().then((res)=>{
 					this.wait(false)
-					if(res.data.data.isSubscribe===false){
-						this.$layer.msg("未关注");
+					if(res.data.data!=undefined&&res.data.data.isSubscribe===false){
+						this.isSubscribe=false;
+						this.showRule(true,'unconcerned')
 						return
 					}
-					if(res.data.code==500){
+					if(res.data.code==200){
+						this.isSign = true;
+						this.isSubscribe=true;
 						this.showRule(true,'sign');
 						setTimeout(()=>{
 							this.showRule(false)
-							console.log(23)
 						},2000)
-						this.isSign = true;
 					}else{
-						this.$layer.msg("接口错误")
+						this.$layer.msg("获取接口失败7")
 					}
 				}).catch((err)=>{
-					this.$layer.msg("接口错误")
+					this.$layer.msg("获取接口失败8")
 				})
 			},
 			//显示规则
@@ -161,6 +193,10 @@
 			},
 			//进入许愿墙
 			gotoWall(){
+				if(this.isSubscribe===false){
+					this.showRule(true,'unconcerned');
+					return
+				}
 				this.$router.push('wish')
 			}
 		}
